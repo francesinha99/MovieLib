@@ -13,9 +13,12 @@ namespace MovieLib.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private  MovieApplicationContext blahContext { get; set; }
+
+        public HomeController(ILogger<HomeController> logger, MovieApplicationContext someName)
         {
             _logger = logger;
+            blahContext = someName;
         }
 
         public IActionResult Index()
@@ -23,9 +26,23 @@ namespace MovieLib.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Podcasts()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult MovieForm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult MovieForm(ApplicationResponse ar)
+        {
+            blahContext.Add(ar);
+            blahContext.SaveChanges();
+            return View("Confirmation");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
