@@ -21,9 +21,8 @@ namespace MovieLib.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -52,13 +51,15 @@ namespace MovieLib.Migrations
 
                     b.HasKey("MovieID");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             MovieID = 1,
-                            Category = "Adventure",
+                            CategoryID = 6,
                             Director = "Ben Stiller",
                             Edited = false,
                             LentTo = "",
@@ -70,7 +71,7 @@ namespace MovieLib.Migrations
                         new
                         {
                             MovieID = 2,
-                            Category = "Comedy",
+                            CategoryID = 7,
                             Director = "John Hughes",
                             Edited = false,
                             LentTo = "",
@@ -82,7 +83,7 @@ namespace MovieLib.Migrations
                         new
                         {
                             MovieID = 3,
-                            Category = "Family",
+                            CategoryID = 1,
                             Director = "Frank Capra",
                             Edited = false,
                             LentTo = "",
@@ -91,6 +92,71 @@ namespace MovieLib.Migrations
                             Title = "It's a Wonderful Life",
                             Year = 1946
                         });
+                });
+
+            modelBuilder.Entity("MovieLib.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Miscellaneous"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Television"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            CategoryName = "VHS"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryID = 8,
+                            CategoryName = "Drama"
+                        });
+                });
+
+            modelBuilder.Entity("MovieLib.Models.ApplicationResponse", b =>
+                {
+                    b.HasOne("MovieLib.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
